@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끄투 단어 사전</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>끄투코리아 단어 사전</h1>
+
+        <!-- 검색 섹션 -->
+        <div class="search-section">
+            <div class="search-bar">
+                <!-- 끝말잇기/공격 버튼 -->
+                <button id="mode-btn" onclick="toggleMode()">끝말잇기</button>
+
+                <input type="text" id="search-bar" placeholder="단어를 입력하세요" oninput="checkSearchInput()">
+                <button id="search-btn" onclick="searchWord()" disabled>검색</button>
+                
+                <!-- 정렬 드롭다운 -->
+                <div class="dropdown">
+                    <button class="dropbtn">현재 정렬: <span id="sort-order-display">내림차순</span></button>
+                    <div class="dropdown-content">
+                        <button onclick="changeSortOrder('asc')">오름차순</button>
+                        <button onclick="changeSortOrder('desc')">내림차순</button>
+                        <!-- 후속 단어 수 순 정렬 버튼 -->
+                        <button id="follow-up-sort" onclick="sortByFollowUpCount()" style="display: none;">후속 단어 수 순</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- 검색 결과 -->
+        <div id="results"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
