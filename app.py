@@ -15,7 +15,11 @@ def home():
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query', '')
+<<<<<<< HEAD
     sort_order = request.args.get('sort', 'desc')  # 'des   c' or 'asc'
+=======
+    sort_order = request.args.get('sort', 'desc')  # 'desc' or 'asc'
+>>>>>>> 4a14b396d5f67be2f3fd4630b0673152342f544b
     mode = request.args.get('mode', '끝말잇기')  # '끝말잇기' or '공격'
 
     # database.json 파일을 로드
