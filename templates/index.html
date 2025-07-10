@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>끄투 사전</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>끄투 사전</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-    <div class="container">
-        <h1>끄투코리아 사전</h1>
+  <div class="container">
+    <!-- 상단 버튼 영역 -->
+    <div class="top-controls">
+      <button id="mode-btn" onclick="toggleMode()">끝말잇기</button>
 
-        <!-- 검색 섹션 -->
-        <div class="search-section">
-            <div class="search-bar">
-                <!-- 끝말잇기/공격 버튼 -->
-                <button id="mode-btn" onclick="toggleMode()">끝말잇기</button>
-
-                <input type="text" id="search-bar" placeholder="단어를 입력하세요" oninput="checkSearchInput()">
-                <button id="search-btn" onclick="searchWord()" disabled>검색</button>
-                
-                <!-- 정렬 드롭다운 -->
-                <div class="dropdown">
-                    <button class="dropbtn">현재 정렬: <span id="sort-order-display">내림차순</span></button>
-                    <div class="dropdown-content">
-                        <button onclick="changeSortOrder('asc')">오름차순</button>
-                        <button onclick="changeSortOrder('desc')">내림차순</button>
-                        <!-- 후속 단어 수 순 정렬 버튼 -->
-                        <button id="follow-up-sort" onclick="sortByFollowUpCount()" style="display: none;">후속 단어 수 순</button>
-                    </div>
-                </div>
-            </div>
+      <div class="dropdown">
+        <button class="dropbtn">정렬: <span id="sort-order-display">내림차순</span></button>
+        <div class="dropdown-content">
+          <button onclick="changeSortOrder('asc')">오름차순</button>
+          <button onclick="changeSortOrder('desc')">내림차순</button>
         </div>
-        
+      </div>
 
-        <!-- 검색 결과 -->
-        <div id="results"></div>
+      <button onclick="openSettings()">설정</button>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- 검색 입력 영역 -->
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="search-bar" placeholder="시작 단어" oninput="checkSearchInput()">
+        <input type="text" id="end-search-bar" placeholder="끝나는 단어" style="display: none">
+        <button id="search-btn" onclick="searchWord()" disabled>검색</button>
+      </div>
+    </div>
+
+    <!-- 결과 출력 -->
+    <div id="results"></div>
+  </div>
+
+  <!-- 설정 팝업 -->
+  <div id="settings-popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>설정</h3>
+      <label>
+        <input type="checkbox" id="enable-endword-setting" onchange="toggleEndWordInput()"> 
+        끝나는 단어 설정
+      </label>
+      <br><br>
+      <button onclick="closeSettings()">닫기</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

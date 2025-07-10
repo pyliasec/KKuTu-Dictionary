@@ -2,47 +2,56 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px; /* 창 끝부분과의 간격을 추가 */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .container {
-    position: fixed;
-    top: 20px;
     width: 100%;
     max-width: 1100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 0 auto;
     padding: 20px;
-    z-index: 10;
+    box-sizing: border-box;
 }
 
-h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 20px; /* 제목과 검색창 간격 */
+.top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-section {
+    margin-bottom: 20px;
 }
 
 .search-bar {
     display: flex;
-    gap: 10px; /* 검색창, 버튼, 드롭다운 간격 */
-    align-items: center; /* 수직 정렬 */
+    flex-wrap: nowrap;         
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    overflow-x: auto;
 }
 
-#search-bar {
+#search-bar,
+#end-search-bar {
     padding: 10px;
-    width: 300px;
     font-size: 1rem;
+    flex: 1 1 20%;
+    min-width: 150px;
+    max-width: 300px;
+    box-sizing: border-box;
 }
 
 button {
     padding: 10px;
     font-size: 1rem;
-    cursor: pointer;
+    flex-shrink: 0;
 }
 
 button:disabled {
@@ -51,7 +60,7 @@ button:disabled {
 }
 
 .dropdown {
-    position: relative; /* 드롭다운 메뉴를 검색 바 오른쪽에 위치 */
+    position: relative;
 }
 
 .dropbtn {
@@ -89,12 +98,12 @@ button:disabled {
 }
 
 #results {
-    margin-top: 20px; /* 검색창과 20px 간격 */
-    width: 100%; /* 화면 너비에 맞게 자동 크기 조정 */
-    max-width: 95%; /* 창의 끝과 더 떨어지도록 최대 너비를 95%로 설정 */
-    height: 550px; /* 박스 높이 증가 */
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1000px;
+    height: 550px;
     overflow-y: scroll;
-    padding: 30px; /* 내부 여백 증가 */
+    padding: 30px;
     border: 1px solid #ccc;
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -102,13 +111,37 @@ button:disabled {
     text-align: left;
     font-size: 1.2rem;
     box-sizing: border-box;
-    margin-left: 5%; /* 좌우 여백을 줄여서 너비를 늘림 */
-    margin-right: 5%; /* 같은 방식으로 우측 여백 추가 */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
-
 #results span {
-    color: #777; /* 회색 텍스트 */
-    font-size: 0.9rem; /* 작은 글씨 */
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* 설정 팝업 */
+.popup {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
 }
