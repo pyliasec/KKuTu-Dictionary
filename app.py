@@ -74,6 +74,7 @@ def search():
     sort_order = request.args.get('sort', 'desc')
     mode = request.args.get('mode', '끝말잇기')
     end_priority = request.args.get('endPriority', '').strip()
+    mission_char = request.args.get('missionChar', '').strip()
 
     # 시작 글자 두음법칙 적용
     variants = get_dueum_variants(query)
@@ -91,6 +92,11 @@ def search():
             seen.add(word)
             item = entry.copy()
             item['length'] = len(word)
+            
+            # 미션단어 기능: 특정 글자가 포함된 개수 계산
+            if mission_char:
+                item['mission_count'] = word.count(mission_char)
+            
             results.append(item)
 
     if mode == '공격':
@@ -101,19 +107,51 @@ def search():
             item['follow_up_count'] = sum(CHAR_COUNTS.get(ch, 0) for ch in last_variants)
         results = [r for r in results if r['length'] > 1 and r['follow_up_count'] > 0]
 
-    # 우선 정렬 (끝나는 단어 우선)
-    if end_priority:
-        # 끝 글자 두음법칙 적용 (양방향)
-        end_variants = get_dueum_variants(end_priority, reverse=True)
-        results.sort(key=lambda x: (
-            not any(x['word'].endswith(ev) for ev in end_variants),
-            -x.get('follow_up_count', 0) if mode == '공격' else -x['length']
-        ))
-    else:
-        key_func = (lambda x: -x.get('follow_up_count', 0)) if mode == '공격' else (lambda x: -x['length'])
-        results.sort(key=key_func)
-        if sort_order == 'asc':
-            results.reverse()
+    # 정렬 우선순위 설정
+    def get_sort_key(item):
+        word = item['word']
+        mission_count = item.get('mission_count', 0) if mission_char else 0
+        follow_up_count = item.get('follow_up_count', 0)
+        length = item['length']
+        
+        # 끝나는 단어 우선순위 점수
+        end_priority_score = len(end_priority.split(',')) if end_priority else 0
+        if end_priority:
+            priority_chars = [char.strip() for char in end_priority.split(',') if char.strip()]
+            last_char = word[-1]
+            for i, priority_char in enumerate(priority_chars):
+                end_variants = get_dueum_variants(priority_char, reverse=True)
+                if any(last_char == ev for ev in end_variants):
+                    end_priority_score = i
+                    break
+        
+        # 정렬 키 반환
+        if mission_char:
+            # 미션단어가 있는 경우
+            if mode == '공격':
+                if sort_order == 'asc':
+                    return (end_priority_score, -mission_count, follow_up_count)  # 후속 단어 적은 순
+                else:
+                    return (end_priority_score, -mission_count, -follow_up_count)  # 후속 단어 많은 순
+            else:
+                if sort_order == 'asc':
+                    return (end_priority_score, -mission_count, length)  # 길이 짧은 순
+                else:
+                    return (end_priority_score, -mission_count, -length)  # 길이 긴 순
+        else:
+            # 미션단어가 없는 경우
+            if mode == '공격':
+                if sort_order == 'asc':
+                    return (end_priority_score, follow_up_count)  # 후속 단어 적은 순
+                else:
+                    return (end_priority_score, -follow_up_count)  # 후속 단어 많은 순
+            else:
+                if sort_order == 'asc':
+                    return (end_priority_score, length)  # 길이 짧은 순
+                else:
+                    return (end_priority_score, -length)  # 길이 긴 순
+    
+    results.sort(key=get_sort_key)
 
     return jsonify(results)
 

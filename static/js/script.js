@@ -24,18 +24,28 @@ function toggleEndWordInput() {
   endInput.style.display = enabled ? 'inline-block' : 'none';
 }
 
+// 미션단어 입력창 표시 여부 제어
+function toggleMissionInput() {
+  const enabled = document.getElementById('enable-mission-setting').checked;
+  const missionInput = document.getElementById('mission-search-bar');
+  missionInput.style.display = enabled ? 'inline-block' : 'none';
+}
+
 // 검색 실행
 function searchWord() {
   const query = document.getElementById('search-bar').value;
   const endEnabled = document.getElementById('enable-endword-setting').checked;
   const endQuery = endEnabled ? document.getElementById('end-search-bar').value.trim() : '';
+  const missionEnabled = document.getElementById('enable-mission-setting').checked;
+  const missionQuery = missionEnabled ? document.getElementById('mission-search-bar').value.trim() : '';
   if (query.trim() === '') return;
 
   const params = new URLSearchParams({
     query: query,
     sort: currentSortOrder,
     mode: currentMode,
-    endPriority: endQuery
+    endPriority: endQuery,
+    missionChar: missionQuery
   });
 
   fetch(`/search?${params.toString()}`)
@@ -63,10 +73,16 @@ function searchWord() {
             followUpCount = item.follow_up_count;
           }
 
-          detailsText.textContent = currentMode === '끝말잇기'
+          let detailsContent = currentMode === '끝말잇기'
             ? `단어 길이: ${length}자`
             : `단어 길이: ${length}자 | 후속 단어 수: ${followUpCount}`;
 
+          // 미션단어 정보 추가
+          if (missionEnabled && missionQuery && item.mission_count !== undefined) {
+            detailsContent += ` | 🎯${missionQuery} 개수: ${item.mission_count}`;
+          }
+
+          detailsText.textContent = detailsContent;
           detailsText.style.color = '#777';
           detailsText.style.fontSize = '0.9rem';
           detailsText.style.display = 'block';
@@ -106,5 +122,9 @@ document.getElementById('search-bar').addEventListener('keyup', e => {
 });
 
 document.getElementById('end-search-bar').addEventListener('keyup', e => {
+  if (e.key === 'Enter') searchWord();
+});
+
+document.getElementById('mission-search-bar').addEventListener('keyup', e => {
   if (e.key === 'Enter') searchWord();
 });

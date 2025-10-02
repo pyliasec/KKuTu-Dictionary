@@ -27,7 +27,8 @@
     <div class="search-section">
       <div class="search-bar">
         <input type="text" id="search-bar" placeholder="시작 단어" oninput="checkSearchInput()">
-        <input type="text" id="end-search-bar" placeholder="끝나는 단어" style="display: none">
+        <input type="text" id="end-search-bar" placeholder="끝나는 단어 (예: 가,나,다)" style="display: none">
+        <input type="text" id="mission-search-bar" placeholder="미션" style="display: none">
         <button id="search-btn" onclick="searchWord()" disabled>검색</button>
       </div>
     </div>
@@ -44,6 +45,18 @@
         <input type="checkbox" id="enable-endword-setting" onchange="toggleEndWordInput()"> 
         끝나는 단어 설정
       </label>
+      <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+        콤마(,)로 구분하여 여러 글자 입력 가능<br>
+        예: 가,나,다 (순서대로 우선순위 적용)
+      </p>
+      <br>
+      <label>
+        <input type="checkbox" id="enable-mission-setting" onchange="toggleMissionInput()"> 
+        미션단어 설정
+      </label>
+      <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+        특정 글자가 많이 포함된 단어를 우선 정렬
+      </p>
       <br><br>
       <button onclick="closeSettings()">닫기</button>
     </div>

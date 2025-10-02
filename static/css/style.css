@@ -42,9 +42,18 @@ body {
 #end-search-bar {
     padding: 10px;
     font-size: 1rem;
-    flex: 1 1 20%;
-    min-width: 150px;
-    max-width: 300px;
+    flex: 1 1 120px;
+    min-width: 100px;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+#mission-search-bar {
+    padding: 10px;
+    font-size: 1rem;
+    flex: 0 0 60px;
+    min-width: 50px;
+    max-width: 60px;
     box-sizing: border-box;
 }
 
@@ -52,6 +61,7 @@ button {
     padding: 10px;
     font-size: 1rem;
     flex-shrink: 0;
+    min-width: 70px;
 }
 
 button:disabled {
@@ -144,4 +154,68 @@ button:disabled {
 }
 
 @media (max-width: 600px) {
+    .search-bar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    #search-bar,
+    #end-search-bar {
+        flex: 1 1 120px;
+        min-width: 100px;
+        max-width: 150px;
+        margin-bottom: 5px;
+    }
+    
+    #mission-search-bar {
+        flex: 0 0 50px;
+        min-width: 45px;
+        max-width: 50px;
+        margin-bottom: 5px;
+    }
+    
+    #search-btn {
+        margin-top: 5px;
+        min-width: 60px;
+    }
+    
+    .popup {
+        width: 90%;
+        top: 20%;
+        transform: translate(-50%, -20%);
+    }
+}
+
+@media (max-width: 400px) {
+    .search-bar {
+        gap: 5px;
+    }
+    
+    #search-bar,
+    #end-search-bar {
+        flex: 1 1 100px;
+        min-width: 80px;
+        max-width: 120px;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    #mission-search-bar {
+        flex: 0 0 40px;
+        min-width: 35px;
+        max-width: 40px;
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    #search-btn {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        min-width: 50px;
+    }
+    
+    .top-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
